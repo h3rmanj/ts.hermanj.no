@@ -73,7 +73,7 @@ public class VoiceTextChannelFeature : IBotFeature
                     var botRole = channel.Guild.CurrentUser.Roles.FirstOrDefault(role => role.Id != channel.Guild.EveryoneRole.Id);
                     if (botRole != null)
                     {
-                        await channel.Guild.CreateTextChannelAsync(channel.Name, properties =>
+                        var textChannel = await channel.Guild.CreateTextChannelAsync(channel.Name, properties =>
                         {
                             properties.CategoryId = channel.CategoryId;
                             properties.PermissionOverwrites = new Overwrite[]
@@ -83,6 +83,8 @@ public class VoiceTextChannelFeature : IBotFeature
                                 new Overwrite(botRole.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Allow, manageChannel: PermValue.Allow))
                             };
                         });
+
+                        await textChannel.SendMessageAsync($"Hi! This is a private text channel for users in voice channel {channel.Name}. It will be deleted when everyone leaves.");
                     }
                 }
             }
