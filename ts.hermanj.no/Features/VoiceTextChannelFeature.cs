@@ -68,7 +68,7 @@ public class VoiceTextChannelFeature : IBotFeature
 
                 await user.AddRoleAsync(role);
 
-                if (!channel.Guild.TextChannels.Any(tc => tc.Name == channel.Name))
+                if (!channel.Guild.TextChannels.Any(tc => tc.Name == channel.Name.Replace(' ', '-')))
                 {
                     var botRole = channel.Guild.CurrentUser.Roles.FirstOrDefault(role => role.Id != channel.Guild.EveryoneRole.Id);
                     if (botRole != null)
@@ -79,8 +79,8 @@ public class VoiceTextChannelFeature : IBotFeature
                             properties.PermissionOverwrites = new Overwrite[]
                             {
                                 new Overwrite(channel.Guild.EveryoneRole.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Deny)),
-                                new Overwrite(role.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Allow)),
-                                new Overwrite(botRole.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Allow, manageChannel: PermValue.Allow))
+                                new Overwrite(role.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Allow, sendMessages: PermValue.Allow)),
+                                new Overwrite(botRole.Id, PermissionTarget.Role, new OverwritePermissions().Modify(viewChannel: PermValue.Allow, manageChannel: PermValue.Allow, sendMessages: PermValue.Allow))
                             };
                         });
 
