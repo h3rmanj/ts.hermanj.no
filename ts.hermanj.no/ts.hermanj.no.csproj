@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker;Microsoft.NET.Sdk.Publish">
+	
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -7,7 +7,7 @@
     <UserSecretsId>c46c1711-11d3-492a-b5b5-117f9085b43f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />

@@ -13,4 +13,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 WORKDIR /app
 COPY --from=publish /app .
 
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
 ENTRYPOINT ["dotnet", "ts.hermanj.no.dll"]
