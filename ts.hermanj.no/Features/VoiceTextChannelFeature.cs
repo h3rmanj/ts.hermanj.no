@@ -42,7 +42,7 @@ public class VoiceTextChannelFeature : IBotFeature
 
                 if (!prevState.VoiceChannel.Users.Any())
                 {
-                    var textChannel = channel.Guild.TextChannels.FirstOrDefault(tc => tc.Name == channel.Name);
+                    var textChannel = channel.Guild.TextChannels.FirstOrDefault(tc => tc.Name == channel.Name.Replace(' ', '-'));
 
                     if (textChannel != null)
                     {
