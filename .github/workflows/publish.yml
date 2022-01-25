@@ -19,4 +19,5 @@ jobs:
           repository: ${{ secrets.repository }}
           image: tshermanjno
           tag: latest
+          branch: main
           dockerfile: ts.hermanj.no/Dockerfile
