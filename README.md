@@ -13,3 +13,7 @@ This is similar to the way TeamSpeak handles text channels.
 ### Custom Colors
 
 React to a message from the bot to set a custom color in the user list.
+
+### Daily Wordle Thread
+
+Creates a thread every day for everyone to post their Wordle result.
