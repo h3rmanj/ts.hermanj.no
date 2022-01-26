@@ -18,6 +18,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton(new DiscordSocketClient());
         services.AddSingleton<IBotFeature, CustomColorFeature>();
         services.AddSingleton<IBotFeature, VoiceTextChannelFeature>();
+        services.AddSingleton<IBotFeature, DailyWordleFeature>();
         services.AddHostedService<DiscordWorker>();
     })
     .Build();

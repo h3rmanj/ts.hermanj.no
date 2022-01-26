@@ -1,19 +1,19 @@
-﻿using Discord.WebSocket;
-using System.Text.RegularExpressions;
+﻿using Discord;
+using Discord.WebSocket;
 using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features
 {
     public class DailyWordleFeature : IBotFeature
     {
-        private static readonly string WORDLE_CHANNEL = "wordle";
+        private static readonly string WORDLE_CHANNEL = "general";
         private static readonly int START_WORDLE = 221;
         private static readonly DateTime START_DATE = new DateTime(2022, 01, 26);
 
-        private readonly ILogger<CustomColorFeature> _logger;
+        private readonly ILogger<DailyWordleFeature> _logger;
         private readonly DiscordSocketClient _client;
 
-        public DailyWordleFeature(ILogger<CustomColorFeature> logger, DiscordSocketClient client)
+        public DailyWordleFeature(ILogger<DailyWordleFeature> logger, DiscordSocketClient client)
         {
             _logger = logger;
             _client = client;
@@ -21,33 +21,42 @@ namespace ts.hermanj.no.Features
 
         public async Task Activate()
         {
+            // this might be bad? idc its a bot
+            while (true)
+            {
+                try
+                {
+                    await CreateDailyWordleThread();
+                } catch (Exception ex)
+                {
+                    _logger.LogInformation(ex, "what");
+                }
+
+                await Task.Delay((int)GetMilliSecondsUntilMidnight());
+            }
+        }
+        
+        private async Task CreateDailyWordleThread ()
+        {
             foreach (var guild in _client.Guilds)
             {
-                var worldeChannel = guild.TextChannels.FirstOrDefault(c => c.Name == WORDLE_CHANNEL);
-                if (worldeChannel != null)
+                var wordleChannel = guild.TextChannels.FirstOrDefault(c => c.Name == WORDLE_CHANNEL);
+                if (wordleChannel != null)
                 {
-                    var todaysWordle = GetTodaysWordle();
+                    var wordleThreadName = $"Wordle {GetTodaysWordle()}";
 
-                    var thread = worldeChannel.Threads.LastOrDefault();
-                    if (thread != null)
+                    if (!wordleChannel.Threads.Any(t => t.Name == wordleThreadName))
                     {
-                        //TODO: Errorhandle threads without numbers
-                        var threadName = thread.Name;
-                        var threadNumber = Int32.Parse(Regex.Match(threadName, @"\d+").Value);
+                        _logger.LogInformation("Creating thread");
 
-                        if (todaysWordle != threadNumber && threadNumber < todaysWordle)
-                        {
-                            await worldeChannel.CreateThreadAsync($"{WORDLE_CHANNEL} {todaysWordle}");
-                        }
-                    }
-                    else
-                    {
-                        await worldeChannel.CreateThreadAsync($"{WORDLE_CHANNEL} {todaysWordle}");
+                        var thread = await wordleChannel.CreateThreadAsync(wordleThreadName, autoArchiveDuration: ThreadArchiveDuration.ThreeDays);
+
+                        _logger.LogInformation("Posting message in thread");
+
+                        await (thread as IThreadChannel).SendMessageAsync("Post your daily wordle result!\n<https://www.powerlanguage.co.uk/wordle/>");
                     }
                 }
             }
-
-            await Task.Delay((int)GetMilliSecondsUntilMidnight());
         }
 
         private static double GetMilliSecondsUntilMidnight()
