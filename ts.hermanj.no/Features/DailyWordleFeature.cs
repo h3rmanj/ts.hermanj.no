@@ -52,7 +52,15 @@ namespace ts.hermanj.no.Features
                 }
             }
 
-            await Task.Delay(TimeSpan.FromDays(1));
+            await Task.Delay((int)GetMilliSecondsUntilMidnight());
+        }
+
+        private static double GetMilliSecondsUntilMidnight()
+        {
+            var now = DateTime.Now;
+            var tmr = now.AddDays(1).Date;
+
+            return (tmr - now).TotalMilliseconds;
         }
 
         private static int GetTodaysWordle()
