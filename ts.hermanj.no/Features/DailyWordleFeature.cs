@@ -1,10 +1,5 @@
 ﻿using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features
@@ -26,15 +21,15 @@ namespace ts.hermanj.no.Features
 
         public async Task Activate()
         {
-            foreach(var guild in _client.Guilds)
+            foreach (var guild in _client.Guilds)
             {
                 var worldeChannel = guild.TextChannels.FirstOrDefault(c => c.Name == WORDLE_CHANNEL);
-                if(worldeChannel != null)
+                if (worldeChannel != null)
                 {
                     var todaysWordle = GetTodaysWordle();
 
                     var thread = worldeChannel.Threads.LastOrDefault();
-                    if(thread != null)
+                    if (thread != null)
                     {
                         //TODO: Errorhandle threads without numbers
                         var threadName = thread.Name;
