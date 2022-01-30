@@ -84,7 +84,7 @@ public class VoiceTextChannelFeature : IBotFeature
                             };
                         });
 
-                        await textChannel.SendMessageAsync($"Hi! This is a private text channel for users in voice channel {channel.Name}. It will be deleted when everyone leaves.");
+                        await textChannel.SendMessageAsync($"This is a private text channel for users in voice channel {channel.Name}. It will be deleted when everyone leaves.\nType `!lock` to limit the channel to current users.");
                     }
                 }
             }
