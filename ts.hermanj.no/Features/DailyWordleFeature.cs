@@ -43,7 +43,7 @@ namespace ts.hermanj.no.Features
                 var wordleChannel = guild.TextChannels.FirstOrDefault(c => c.Name == WORDLE_CHANNEL);
                 if (wordleChannel != null)
                 {
-                    var wordleThreadName = $"Wordle {GetTodaysWordle()}";
+                    var wordleThreadName = $"wordle {GetTodaysWordle()}";
 
                     if (!wordleChannel.Threads.Any(t => t.Name == wordleThreadName))
                     {
