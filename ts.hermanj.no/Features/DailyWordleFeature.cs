@@ -43,7 +43,7 @@ namespace ts.hermanj.no.Features
                     {
                         _logger.LogInformation("Creating thread");
 
-                        var thread = await wordleChannel.CreateThreadAsync(wordleThreadName, autoArchiveDuration: ThreadArchiveDuration.ThreeDays);
+                        var thread = await wordleChannel.CreateThreadAsync(wordleThreadName, autoArchiveDuration: ThreadArchiveDuration.OneDay);
 
                         _logger.LogInformation("Posting message in thread");
 
