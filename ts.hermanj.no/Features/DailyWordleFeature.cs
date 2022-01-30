@@ -1,25 +1,19 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features
 {
-    public class DailyWordleFeature : IBotFeature
+    public class DailyWordleFeature : BotFeature
     {
         private static readonly string WORDLE_CHANNEL = "general";
         private static readonly int START_WORDLE = 221;
-        private static readonly DateTime START_DATE = new DateTime(2022, 01, 26);
+        private static readonly DateTime START_DATE = new(2022, 01, 26);
 
-        private readonly ILogger<DailyWordleFeature> _logger;
-        private readonly DiscordSocketClient _client;
-
-        public DailyWordleFeature(ILogger<DailyWordleFeature> logger, DiscordSocketClient client)
+        public DailyWordleFeature(ILogger<DailyWordleFeature> logger, DiscordSocketClient client) : base (logger, client)
         {
-            _logger = logger;
-            _client = client;
         }
 
-        public async Task Activate()
+        public override async Task Activate()
         {
             // this might be bad? idc its a bot
             while (true)

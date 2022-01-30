@@ -1,7 +1,6 @@
 using Discord.WebSocket;
 using ts.hermanj.no;
 using ts.hermanj.no.Features;
-using ts.hermanj.no.Interfaces;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(builder =>
@@ -16,11 +15,11 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         services.AddSingleton(new DiscordSocketClient());
-        services.AddSingleton<IBotFeature, CustomColorFeature>();
-        services.AddSingleton<IBotFeature, VoiceTextChannelFeature>();
-        services.AddSingleton<IBotFeature, DailyWordleFeature>();
-        services.AddSingleton<IBotFeature, LockVoiceChannelFeature>();
         services.AddHostedService<DiscordWorker>();
+        services.AddHostedService<CustomColorFeature>();
+        services.AddHostedService<VoiceTextChannelFeature>();
+        services.AddHostedService<DailyWordleFeature>();
+        services.AddHostedService<LockVoiceChannelFeature>();
     })
     .Build();
 

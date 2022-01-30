@@ -1,24 +1,18 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features
 {
-    public class LockVoiceChannelFeature : IBotFeature
+    public class LockVoiceChannelFeature : BotFeature
     {
         private const string LOCK = "!lock";
         private const string UNLOCK = "!unlock";
 
-        private readonly ILogger<LockVoiceChannelFeature> _logger;
-        private readonly DiscordSocketClient _client;
-
-        public LockVoiceChannelFeature(ILogger<LockVoiceChannelFeature> logger, DiscordSocketClient client)
+        public LockVoiceChannelFeature(ILogger<LockVoiceChannelFeature> logger, DiscordSocketClient client) : base(logger, client)
         {
-            _logger = logger;
-            _client = client;
         }
 
-        public Task Activate()
+        public override Task Activate()
         {
             _client.MessageReceived += MessageRecieved;
             _client.UserVoiceStateUpdated += UserVoiceStateUpdated;

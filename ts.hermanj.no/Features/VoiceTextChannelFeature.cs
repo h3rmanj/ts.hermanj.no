@@ -1,21 +1,16 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features;
 
-public class VoiceTextChannelFeature : IBotFeature
+public class VoiceTextChannelFeature : BotFeature
 {
-    private readonly ILogger<VoiceTextChannelFeature> _logger;
-    private readonly DiscordSocketClient _client;
 
-    public VoiceTextChannelFeature(ILogger<VoiceTextChannelFeature> logger, DiscordSocketClient client)
+    public VoiceTextChannelFeature(ILogger<VoiceTextChannelFeature> logger, DiscordSocketClient client) : base(logger, client)
     {
-        _logger = logger;
-        _client = client;
     }
 
-    public Task Activate()
+    public override Task Activate()
     {
         _client.UserVoiceStateUpdated += UserVoiceStateUpdated;
         return Task.CompletedTask;

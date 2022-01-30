@@ -1,10 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using ts.hermanj.no.Interfaces;
 
 namespace ts.hermanj.no.Features;
 
-public class CustomColorFeature : IBotFeature
+public class CustomColorFeature : BotFeature
 {
 
     private static readonly string COLOR_CHANNEL = "color";
@@ -22,16 +21,11 @@ public class CustomColorFeature : IBotFeature
         new ColorRole(Emote.Parse("<:creamy:934568251378253836>"), "weeb", new Color(0xFF00D6))
     };
 
-    private readonly DiscordSocketClient _client;
-    private readonly ILogger<CustomColorFeature> _logger;
-
-    public CustomColorFeature(ILogger<CustomColorFeature> logger, DiscordSocketClient client)
+    public CustomColorFeature(ILogger<CustomColorFeature> logger, DiscordSocketClient client) : base(logger, client)
     {
-        _logger = logger;
-        _client = client;
     }
 
-    public async Task Activate()
+    public override async Task Activate()
     {
         foreach (var guild in _client.Guilds)
         {
