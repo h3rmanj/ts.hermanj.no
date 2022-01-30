@@ -26,14 +26,6 @@ public class DiscordWorker : BackgroundService
         await _client.StartAsync();
 
         _client.Ready += Ready;
-
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            await Task.Delay(1000, stoppingToken);
-        }
-
-        _logger.LogInformation("Worker stopped at: {time}", DateTimeOffset.Now);
-        await _client.StopAsync();
     }
 
     private Task Log(LogMessage msg)
