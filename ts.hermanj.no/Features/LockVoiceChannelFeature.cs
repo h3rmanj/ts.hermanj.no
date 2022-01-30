@@ -38,6 +38,7 @@ namespace ts.hermanj.no.Features
 
                 if (textChannel != null && channel != null)
                 {
+                    var tasks = new List<Task>();
                     var userLimit = text switch
                     {
                         LOCK => channel.Users.Count,
@@ -46,18 +47,20 @@ namespace ts.hermanj.no.Features
 
                     _logger.LogInformation("Running {command} on {channel}. Setting user limit to {limit}.", text, channelName, userLimit);
 
-                    await channel.ModifyAsync(properties =>
+                    tasks.Add(channel.ModifyAsync(properties =>
                     {
                         properties.UserLimit = userLimit;
-                    });
+                    }));
 
                     if (text == LOCK)
                     {
-                        await textChannel.SendMessageAsync("Channel locked to current users. Write `!unlock` to allow other users to join again.");
+                        tasks.Add(textChannel.SendMessageAsync("Channel locked to current users. Write `!unlock` to allow other users to join again."));
                     } else
                     {
-                        await textChannel.SendMessageAsync("Channel unlocked.");
+                        tasks.Add(textChannel.SendMessageAsync("Channel unlocked."));
                     }
+
+                    await Task.WhenAll(tasks);
                 }
             }
         }

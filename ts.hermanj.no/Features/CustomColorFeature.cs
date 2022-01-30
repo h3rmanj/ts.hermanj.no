@@ -56,7 +56,7 @@ public class CustomColorFeature : IBotFeature
                     await message.RemoveAllReactionsAsync();
                 }
 
-                foreach (var color in COLORS)
+                await Task.WhenAll(COLORS.Select(async (color) =>
                 {
                     if (!guild.Roles.Any(r => r.Name == color.Role))
                     {
@@ -66,7 +66,7 @@ public class CustomColorFeature : IBotFeature
 
                     _logger.LogInformation("Adding reaction {emote} to color message.", color.Emote.Name);
                     await message.AddReactionAsync(color.Emote);
-                }
+                }));
             }
         }
 
@@ -80,6 +80,7 @@ public class CustomColorFeature : IBotFeature
 
         if (channel?.Name == COLOR_CHANNEL && reaction.UserId != _client.CurrentUser.Id)
         {
+            var tasks = new List<Task>();
             var color = COLORS.FirstOrDefault(c => c.Emote.Equals(reaction.Emote));
 
             if (color != null)
@@ -91,15 +92,17 @@ public class CustomColorFeature : IBotFeature
                     .Where(r => COLORS.Any(c => c.Role == r.Name))
                     .Select(r => r.Id);
 
-                await user.AddRoleAsync(role);
+                tasks.Add(user.AddRoleAsync(role));
 
                 if (rolesToRemove.Any())
                 {
-                    await user.RemoveRolesAsync(rolesToRemove);
+                    tasks.Add(user.RemoveRolesAsync(rolesToRemove));
                 }
             }
 
-            await message.RemoveReactionAsync(reaction.Emote, reaction.UserId);
+            tasks.Add(message.RemoveReactionAsync(reaction.Emote, reaction.UserId));
+
+            await Task.WhenAll(tasks);
         }
     }
 }
