@@ -18,7 +18,7 @@ public class CustomColorFeature : BotFeature
         new ColorRole(new Emoji("🖤"), "black", Color.DarkerGrey),
         new ColorRole(new Emoji("🤎"), "brown", Color.DarkOrange),
         new ColorRole(new Emoji("🤍"), "white", Color.LighterGrey),
-        new ColorRole(new Emoji("🍑"), "ass", new Color(0xF6B092)),
+        new ColorRole(new Emoji("🍑"), "ass", new Color(0xDD7E66)),
         new ColorRole(Emote.Parse("<:creamy:934568251378253836>"), "weeb", new Color(0xFF00D6))
     };
 
