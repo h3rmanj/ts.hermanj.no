@@ -49,6 +49,18 @@ namespace ts.hermanj.no.Features
 
                         await (thread as IThreadChannel).SendMessageAsync("Post your daily wordle result!\n<https://www.powerlanguage.co.uk/wordle/>");
                     }
+
+                    var messages = (await wordleChannel.GetMessagesAsync().FlattenAsync())
+                        .Where(m =>
+                            (m.Flags?.HasFlag(MessageFlags.HasThread) ?? false)
+                            && m.Author.Id == _client.CurrentUser.Id
+                            && m.CleanContent != wordleThreadName
+                        );
+
+                    foreach (var message in messages)
+                    {
+                        await message.DeleteAsync();
+                    }
                 }
             }
         }
