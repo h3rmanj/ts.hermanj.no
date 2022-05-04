@@ -26,7 +26,11 @@ namespace ts.hermanj.no.Features
                     _logger.LogInformation(ex, "what");
                 }
 
-                await Task.Delay((int)GetMilliSecondsUntilMidnight());
+                var delay = (int) GetMilliSecondsUntilMidnight();
+
+                _logger.LogInformation("Waiting for {delay} ms to post next wordle thread", delay);
+
+                await Task.Delay(delay);
             }
         }
         
@@ -39,6 +43,8 @@ namespace ts.hermanj.no.Features
                 {
                     var wordleThreadName = $"wordle {GetTodaysWordle()}";
 
+                    using var loggerScope = _logger.BeginScope("Processing {WordleThreadName}", wordleThreadName);
+
                     if (!wordleChannel.Threads.Any(t => t.Name == wordleThreadName))
                     {
                         _logger.LogInformation("Creating thread");
@@ -48,7 +54,12 @@ namespace ts.hermanj.no.Features
                         _logger.LogInformation("Posting message in thread");
 
                         await (thread as IThreadChannel).SendMessageAsync("Post your daily wordle result!\n<https://www.powerlanguage.co.uk/wordle/>");
+                    } else
+                    {
+                        _logger.LogInformation("Thread already exists");
                     }
+
+                    _logger.LogInformation("Finding old threads to delete");
 
                     var messages = (await wordleChannel.GetMessagesAsync().FlattenAsync())
                         .Where(m =>
@@ -57,8 +68,11 @@ namespace ts.hermanj.no.Features
                             && m.CleanContent != wordleThreadName
                         );
 
+                    _logger.LogInformation("Found {NumberOfThreadsToDelete} old wordle threads to delete", messages.Count());
+
                     foreach (var message in messages)
                     {
+                        _logger.LogInformation("Deleting thread message {ThreadMessage}", message.CleanContent);
                         await message.DeleteAsync();
                     }
                 }
@@ -68,7 +82,7 @@ namespace ts.hermanj.no.Features
         private static double GetMilliSecondsUntilMidnight()
         {
             var now = DateTime.Now;
-            var tmr = now.AddDays(1).Date;
+            var tmr = now.AddDays(1).Date.AddSeconds(30);
 
             return (tmr - now).TotalMilliseconds;
         }
