@@ -53,7 +53,7 @@ namespace ts.hermanj.no.Features
 
                         _logger.LogInformation("Posting message in thread");
 
-                        await (thread as IThreadChannel).SendMessageAsync("Post your daily wordle result!\n<https://www.powerlanguage.co.uk/wordle/>");
+                        await (thread as IThreadChannel).SendMessageAsync("Post your daily wordle result!\n<https://www.nytimes.com/games/wordle/index.html>");
                     } else
                     {
                         _logger.LogInformation("Thread already exists");
