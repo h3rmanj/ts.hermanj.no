@@ -18,7 +18,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<DiscordWorker>();
         services.AddHostedService<CustomColorFeature>();
         services.AddHostedService<VoiceTextChannelFeature>();
-        services.AddHostedService<DailyWordleFeature>();
+        //services.AddHostedService<DailyWordleFeature>();
         services.AddHostedService<LockVoiceChannelFeature>();
     })
     .Build();
